@@ -81,6 +81,12 @@ function Program.setup(path)
   end
 end
 
+function Program.close()
+  if Config.Settings.close_on_end then
+    os.exit()
+  end
+end
+
 function Program.main()
   if State.currentState == State.SETUP then
     Config.load()
@@ -146,21 +152,51 @@ function Program.main()
     }
     if Time.currentState == Time.State.FINISHED then
       currentEntry.isDQ = false
+      currentEntry.DQreason = ""
       currentEntry.time = Time.total()
     end
-    table.insert(Result.entries, currentEntry)
-    if #State.m64List > State.fileCounter then
-      State.currentState = State.PENDING
-    elseif Config.Settings.print_results then
-      State.currentState = State.RESULTS
+
+    if #State.m64List > 1 then
+      table.insert(Result.entries, currentEntry)
+
+      if #State.m64List > State.fileCounter then
+        State.currentState = State.PENDING
+      elseif Config.Settings.print_result then
+        State.currentState = State.RESULTS
+      else
+        State.currentState = State.LUAEND
+      end
     else
-      State.currentState = State.LUAEND
+      if Config.Settings.print_result then
+        Result.printResult(currentEntry)
+        State.currentState = State.LUAEND
+      end
     end
+
   elseif State.currentState == State.RESULTS then
     Result.sort()
     Result.printResults()
     Log.print('result.txt created.')
     State.currentState = State.LUAEND
+  elseif State.currentState == State.LUAEND then
+    Program.close()
   end
+
   State.counter = State.counter + 1
+
+  if Config.Settings.timeout > 0 then
+    if State.counter > Config.Settings.timeout then
+      currentEntry = {
+        filename = State.m64.m64Name,
+        rerecords = State.m64.rerecords,
+        time = State.counter,
+        isDQ = true,
+        DQreason = "Waited too long"
+      }
+      if Config.Settings.print_result then
+        Result.printResult(currentEntry)
+      end
+  	  Program.close()
+    end
+  end
 end

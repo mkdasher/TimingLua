@@ -91,7 +91,10 @@ end
 local function parse_num_val(str, pos)
   local num_str = str:match('^-?%d+%.?%d*[eE]?[+-]?%d*', pos)
   local val = tonumber(num_str)
-  if not val then error('Error parsing number at position ' .. pos .. '.') end
+  if not val then
+    error('Error parsing number at position ' .. pos .. '.')
+    Program.close()
+  end
   return val, pos + #num_str
 end
 

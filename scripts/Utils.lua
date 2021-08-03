@@ -3,6 +3,8 @@ Utils = {
 }
 
 function Utils.bitAND(a, b)
+	if (a == nil) then Program.close() end
+	if (b == nil) then Program.close() end
 	local p,c=1,0
 	while a>0 and b>0 do
 	    local ra,rb=a%2,b%2

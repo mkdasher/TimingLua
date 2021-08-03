@@ -4,9 +4,10 @@ Config = {
   Settings = {
     m64_path = "C:\\m64",
     m64_replay_file = "all",
-    print_results = false,
+    print_result = false,
     results_file_name = "results.txt",
     show_logs = true,
+    close_on_end = false,
     start_condition = {
   		{
   			action = "spinning enter",
@@ -28,7 +29,8 @@ Config = {
   		}
 	  },
     dq_condition = {},
-    timing_correction = 0
+    timing_correction = 0,
+    timeout = -1
   }
 }
 

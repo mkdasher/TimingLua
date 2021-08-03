@@ -47,6 +47,12 @@ function Result.printResults()
       previousPosition = position
     end
   end
+  file:close()
+end
 
+
+function Result.printResult(result)
+  file = io.open(File.LUA_PATH .. "\\result.json", "w")
+  file:write(json.stringify(result))
   file:close()
 end
