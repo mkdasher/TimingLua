@@ -189,9 +189,9 @@ function Program.main()
       currentEntry = {
         filename = State.m64.m64Name,
         rerecords = State.m64.rerecords,
-        time = State.counter,
+        time = "",
         isDQ = true,
-        DQreason = "Waited too long"
+        DQreason = "Timeout exceeded: " .. State.counter .. "."
       }
       if Config.Settings.print_result then
         Result.printResult(currentEntry)

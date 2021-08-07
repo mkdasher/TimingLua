@@ -30,7 +30,7 @@ Config = {
 	  },
     dq_condition = {},
     timing_correction = 0,
-    timeout = -1
+    timeout = 10000
   }
 }
 
